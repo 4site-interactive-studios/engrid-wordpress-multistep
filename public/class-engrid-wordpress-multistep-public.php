@@ -116,6 +116,32 @@ class Engrid_Wordpress_Multistep_Public {
 			$engrid_end_date = get_field('engrid_end_date', 'option');
 			$engrid_cookie_hours = get_field('engrid_cookie_hours', 'option');
 			$engrid_cookie_name = get_field('engrid_cookie_name', 'option');
+			$engrid_trigger_type = get_field('engrid_trigger_type', 'option');
+			$engrid_trigger_seconds = get_field('engrid_trigger_seconds', 'option');
+			$engrid_trigger_scroll_pixels = get_field('engrid_trigger_scroll_pixels', 'option');
+			$engrid_trigger_scroll_percentage = get_field('engrid_trigger_scroll_percentage', 'option');
+			$engrid_gtm_open_event_name = get_field('engrid_gtm_open_event_name', 'option');
+			$engrid_gtm_close_event_name = get_field('engrid_gtm_close_event_name', 'option');
+			$engrid_gtm_suppressed_event_name = get_field('engrid_gtm_suppressed_event_name', 'option');
+
+			$trigger = 0;
+			switch(trim($engrid_trigger_type)){
+				case "0":
+					$trigger = 0;
+					break;
+				case 'seconds':
+					$trigger = $engrid_trigger_seconds;
+					break;
+				case 'px':
+					$trigger = $engrid_trigger_scroll_pixels.'px';
+					break;
+				case '%':
+					$trigger = $engrid_trigger_scroll_percentage.'%';
+					break;
+				case 'exit':
+					$trigger = 'exit';
+					break;
+			}
 
 			$show_script = true;
 
@@ -145,6 +171,10 @@ class Engrid_Wordpress_Multistep_Public {
 				form_color: "$engrid_form_color",
 				cookie_hours: $engrid_cookie_hours,
 				cookie_name: "$engrid_cookie_name",
+				trigger: "$trigger",
+				gtm_open_event_name: "$engrid_gtm_open_event_name",
+				gtm_close_event_name: "$engrid_gtm_close_event_name",
+				gtm_suppressed_event_name: "$engrid_gtm_suppressed_event_name",
 			};
 ENGRID;
 			if($show_script){

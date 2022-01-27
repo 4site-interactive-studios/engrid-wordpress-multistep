@@ -141,7 +141,7 @@
         },
         {
             "key": "field_61f182b413dfb",
-            "label": "BG Color",
+            "label": "Background Color",
             "name": "engrid_bg_color",
             "type": "color_picker",
             "instructions": "HEX color of the left column background.",
@@ -175,7 +175,7 @@
         },
         {
             "key": "field_61f1835413dfd",
-            "label": "Form Color",
+            "label": "Form Theme Color",
             "name": "engrid_form_color",
             "type": "color_picker",
             "instructions": "HEX color for the form theme.",
@@ -333,6 +333,194 @@
             "min": "",
             "max": "",
             "step": 1
+        },
+        {
+            "key": "field_61f1e7ca4d5dc",
+            "label": "Trigger",
+            "name": "engrid_trigger_type",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "0": "Immediately",
+                "seconds": "Seconds Later",
+                "px": "On Pixel Scroll",
+                "%": "On Percentage Scroll",
+                "exit": "On Exit"
+            },
+            "default_value": false,
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "return_format": "value",
+            "ajax": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_61f1e8cad1f27",
+            "label": "Seconds",
+            "name": "engrid_trigger_seconds",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_61f1e7ca4d5dc",
+                        "operator": "==",
+                        "value": "seconds"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 2,
+            "placeholder": "",
+            "prepend": "Trigger after",
+            "append": "seconds",
+            "min": "",
+            "max": "",
+            "step": 1
+        },
+        {
+            "key": "field_61f1e946d1f28",
+            "label": "Scroll",
+            "name": "engrid_trigger_scroll_pixels",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_61f1e7ca4d5dc",
+                        "operator": "==",
+                        "value": "px"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 500,
+            "placeholder": "",
+            "prepend": "Trigger after scrolling",
+            "append": "pixels",
+            "min": "",
+            "max": "",
+            "step": 1
+        },
+        {
+            "key": "field_61f1e998d1f29",
+            "label": "Percentage",
+            "name": "engrid_trigger_scroll_percentage",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_61f1e7ca4d5dc",
+                        "operator": "==",
+                        "value": "%"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 50,
+            "placeholder": "",
+            "prepend": "Trigger after scrolling",
+            "append": "% of the page",
+            "min": "",
+            "max": "",
+            "step": ""
+        },
+        {
+            "key": "field_61f1f16c7455e",
+            "label": "Google Tag Manager",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_61f1f17a7455f",
+            "label": "Open Event Name",
+            "name": "engrid_gtm_open_event_name",
+            "type": "text",
+            "instructions": "Name of the event to send when the lightbox is displayed.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "donation_lightbox_display",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_61f1f1c774560",
+            "label": "Close Event Name",
+            "name": "engrid_gtm_close_event_name",
+            "type": "text",
+            "instructions": "Name of the event to send when the lightbox is closed.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "donation_lightbox_closed",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_61f1f1f474561",
+            "label": "Supression Event Name",
+            "name": "engrid_gtm_suppressed_event_name",
+            "type": "text",
+            "instructions": "Name of the event to send when the lightbox is suppressed (cookie found).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "donation_lightbox_supressed",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         }
     ],
     "location": [
@@ -353,5 +541,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1643235409
+    "modified": 1643246756
 }
