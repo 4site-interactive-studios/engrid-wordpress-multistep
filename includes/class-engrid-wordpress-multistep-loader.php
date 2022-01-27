@@ -19,7 +19,7 @@
  *
  * @package    Engrid_Wordpress_Multistep
  * @subpackage Engrid_Wordpress_Multistep/includes
- * @author     Your Name <email@example.com>
+ * @author     Fernando Santos <fernando@4sitestudios.com>
  */
 class Engrid_Wordpress_Multistep_Loader {
 

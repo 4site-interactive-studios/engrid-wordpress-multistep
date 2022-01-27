@@ -18,7 +18,7 @@
  *
  * @package    Engrid_Wordpress_Multistep
  * @subpackage Engrid_Wordpress_Multistep/public
- * @author     Your Name <email@example.com>
+ * @author     Fernando Santos <fernando@4sitestudios.com>
  */
 class Engrid_Wordpress_Multistep_Public {
 
@@ -95,9 +95,62 @@ class Engrid_Wordpress_Multistep_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
+		wp_enqueue_script( $this->engrid_wordpress_multistep, plugin_dir_url( __FILE__ ) . 'js/donation-lightbox-parent.js', array(), $this->version, false );
 
-		wp_enqueue_script( $this->engrid_wordpress_multistep, plugin_dir_url( __FILE__ ) . 'js/engrid-wordpress-multistep-public.js', array( 'jquery' ), $this->version, false );
 
+		// wp_enqueue_script( $this->engrid_wordpress_multistep, plugin_dir_url( __FILE__ ) . 'js/engrid-wordpress-multistep-public.js', array( 'jquery' ), $this->version, false );
+		$engrid_donation_page = get_field('engrid_donation_page', 'option');
+		// Only render the plugin if the donation page is set
+		if($engrid_donation_page){
+			$engrid_image = get_field('engrid_image', 'option');
+			$engrid_logo = get_field('engrid_logo', 'option');
+			$engrid_title = get_field('engrid_title', 'option');
+			$engrid_paragraph = get_field('engrid_paragraph', 'option');
+			$engrid_footer = get_field('engrid_footer', 'option');
+			$engrid_bg_color = get_field('engrid_bg_color', 'option');
+			$engrid_text_color = get_field('engrid_text_color', 'option');
+			$engrid_form_color = get_field('engrid_form_color', 'option');
+			$engrid_show_on = get_field('engrid_show_on', 'option');
+			$engrid_hide_on = get_field('engrid_hide_on', 'option');
+			$engrid_start_date = get_field('engrid_start_date', 'option');
+			$engrid_end_date = get_field('engrid_end_date', 'option');
+			$engrid_cookie_hours = get_field('engrid_cookie_hours', 'option');
+			$engrid_cookie_name = get_field('engrid_cookie_name', 'option');
+
+			$show_script = true;
+
+			if(($engrid_show_on && !in_array(get_the_ID(), $engrid_show_on)) || ($engrid_hide_on && in_array(get_the_ID(), $engrid_hide_on))){
+				$show_script = false;
+			}
+
+			if($engrid_start_date && strtotime($engrid_start_date) > time()){
+				$show_script = false;
+			}
+
+			if($engrid_end_date && strtotime($engrid_end_date) < time()){
+				$show_script = false;
+			}
+
+			$engrid_js_code = <<<ENGRID
+
+			DonationLightboxOptions = {
+				url: "$engrid_donation_page",
+				image: "$engrid_image",
+				logo: "$engrid_logo",
+				title: "$engrid_title",
+				paragraph: "$engrid_paragraph",
+				footer: "$engrid_footer",
+				bg_color: "$engrid_bg_color",
+				txt_color: "$engrid_text_color",
+				form_color: "$engrid_form_color",
+				cookie_hours: $engrid_cookie_hours,
+				cookie_name: "$engrid_cookie_name",
+			};
+ENGRID;
+			if($show_script){
+				wp_add_inline_script($this->engrid_wordpress_multistep, $engrid_js_code, 'before');
+			}
+		}
 	}
 
 }

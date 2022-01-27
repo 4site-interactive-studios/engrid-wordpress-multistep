@@ -21,7 +21,7 @@
         {
             "key": "field_61f180fb94e9c",
             "label": "Engaging Networks Donation Page",
-            "name": "engaging_networks_donation_page",
+            "name": "engrid_donation_page",
             "type": "url",
             "instructions": "",
             "required": 0,
@@ -117,8 +117,8 @@
             "default_value": "",
             "placeholder": "",
             "maxlength": "",
-            "rows": "",
-            "new_lines": ""
+            "rows": 4,
+            "new_lines": "br"
         },
         {
             "key": "field_61f1837e13dfe",
@@ -136,8 +136,8 @@
             "default_value": "",
             "placeholder": "",
             "maxlength": "",
-            "rows": "",
-            "new_lines": ""
+            "rows": 4,
+            "new_lines": "br"
         },
         {
             "key": "field_61f182b413dfb",
@@ -273,8 +273,8 @@
                 "class": "",
                 "id": ""
             },
-            "display_format": "d\/m\/Y",
-            "return_format": "d\/m\/Y",
+            "display_format": "m\/d\/Y",
+            "return_format": "m\/d\/Y",
             "first_day": 1
         },
         {
@@ -290,14 +290,33 @@
                 "class": "",
                 "id": ""
             },
-            "display_format": "d\/m\/Y",
-            "return_format": "d\/m\/Y",
+            "display_format": "m\/d\/Y",
+            "return_format": "m\/d\/Y",
             "first_day": 1
+        },
+        {
+            "key": "field_61f1c83ea39c4",
+            "label": "Cookie Name",
+            "name": "engrid_cookie_name",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "HideDonationLightbox",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         },
         {
             "key": "field_61f1839713dff",
             "label": "Cookie Hours",
-            "name": "cookie_hours",
+            "name": "engrid_cookie_hours",
             "type": "number",
             "instructions": "Number of hours to not auto open the lightbox after the user closes it.",
             "required": 0,
@@ -334,5 +353,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1643218418
+    "modified": 1643235409
 }
