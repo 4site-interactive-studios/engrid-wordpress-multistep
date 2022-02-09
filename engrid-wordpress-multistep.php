@@ -16,7 +16,7 @@
  * Plugin Name:       ENgrid Wordpress Multistep
  * Plugin URI:        https://www.4sitestudios.com/engrid-wordpress-multistep/
  * Description:       Add Engaging Networks Multistep Form to your WordPress site.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            4Site Studios
  * Author URI:        https://www.4sitestudios.com/
  * License:           GPL-2.0+
@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'ENGRID_WORDPRESS_MULTISTEP_VERSION', '1.0.0' );
+define( 'ENGRID_WORDPRESS_MULTISTEP_VERSION', '1.0.1' );
 
 /**
  * The code that runs during plugin activation.
