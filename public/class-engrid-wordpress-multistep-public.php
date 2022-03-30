@@ -103,7 +103,11 @@ class Engrid_Wordpress_Multistep_Public {
 		// Only render the plugin if the donation page is set
 		if($engrid_donation_page){
 			$engrid_image = get_field('engrid_image', 'option');
+			$engrid_video = get_field('engrid_video', 'option');
+			$engrid_video_auto_play = get_field('engrid_video_auto_play', 'option');
 			$engrid_logo = get_field('engrid_logo', 'option');
+			$engrid_logo_position = get_field('engrid_logo_position', 'option');
+			$engrid_divider = get_field('engrid_divider', 'option');
 			$engrid_title = get_field('engrid_title', 'option');
 			$engrid_paragraph = get_field('engrid_paragraph', 'option');
 			$engrid_footer = get_field('engrid_footer', 'option');
@@ -123,6 +127,13 @@ class Engrid_Wordpress_Multistep_Public {
 			$engrid_gtm_open_event_name = get_field('engrid_gtm_open_event_name', 'option');
 			$engrid_gtm_close_event_name = get_field('engrid_gtm_close_event_name', 'option');
 			$engrid_gtm_suppressed_event_name = get_field('engrid_gtm_suppressed_event_name', 'option');
+			$confetti = array();
+			if(have_rows('engrid_confetti', 'option') ){
+				while( have_rows('engrid_confetti', 'option') ){ 
+					the_row();
+					$confetti[] = get_sub_field('color');
+				}
+			}
 
 			$trigger = 0;
 			switch(trim($engrid_trigger_type)){
@@ -157,12 +168,22 @@ class Engrid_Wordpress_Multistep_Public {
 				$show_script = false;
 			}
 
+			$engrid_video_auto_play = ($engrid_video_auto_play) ? 'true' : 'false';
+			$engrid_confetti = json_encode($confetti);
+
 			$engrid_js_code = <<<ENGRID
 
 			DonationLightboxOptions = {
 				url: "$engrid_donation_page",
 				image: "$engrid_image",
 				logo: "$engrid_logo",
+				video: "$engrid_video",
+				autoplay: $engrid_video_auto_play,
+				logo_position_top: "{$engrid_logo_position['top']}px",
+				logo_position_left: "{$engrid_logo_position['left']}px",
+				logo_position_right: "{$engrid_logo_position['right']}px",
+				logo_position_bottom: "{$engrid_logo_position['bottom']}px",
+				divider: "$engrid_divider",
 				title: "$engrid_title",
 				paragraph: "$engrid_paragraph",
 				footer: "$engrid_footer",
@@ -175,6 +196,7 @@ class Engrid_Wordpress_Multistep_Public {
 				gtm_open_event_name: "$engrid_gtm_open_event_name",
 				gtm_close_event_name: "$engrid_gtm_close_event_name",
 				gtm_suppressed_event_name: "$engrid_gtm_suppressed_event_name",
+				confetti: $engrid_confetti,
 			};
 ENGRID;
 			if($show_script){

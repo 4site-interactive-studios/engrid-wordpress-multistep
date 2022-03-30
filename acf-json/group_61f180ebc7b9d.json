@@ -35,30 +35,6 @@
             "placeholder": ""
         },
         {
-            "key": "field_61f181cf13df7",
-            "label": "Image",
-            "name": "engrid_image",
-            "type": "image",
-            "instructions": "Main Image of the Lightbox.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "url",
-            "preview_size": "medium",
-            "library": "all",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": ""
-        },
-        {
             "key": "field_61f1822313df8",
             "label": "Logo",
             "name": "engrid_logo",
@@ -81,6 +57,236 @@
             "max_height": "",
             "max_size": "",
             "mime_types": ""
+        },
+        {
+            "key": "field_6243ad93bd622",
+            "label": "Logo Position",
+            "name": "engrid_logo_position",
+            "type": "group",
+            "instructions": "The video will be muted and auto-play with an infinite loop if true.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_6243ade2bd623",
+                    "label": "Top",
+                    "name": "top",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "25",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": 25,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "px",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                },
+                {
+                    "key": "field_6243ae45bd624",
+                    "label": "Bottom",
+                    "name": "bottom",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "25",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "px",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                },
+                {
+                    "key": "field_6243b0ee68cd8",
+                    "label": "Left",
+                    "name": "left",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "25",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": 25,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "px",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                },
+                {
+                    "key": "field_6243b0fd68cd9",
+                    "label": "Right",
+                    "name": "right",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "25",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "px",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                }
+            ]
+        },
+        {
+            "key": "field_6243ac17400c8",
+            "label": "Hero Type",
+            "name": "engrid_hero_type",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "Image",
+            "ui_off_text": "Video"
+        },
+        {
+            "key": "field_61f181cf13df7",
+            "label": "Image",
+            "name": "engrid_image",
+            "type": "image",
+            "instructions": "Main Image of the Lightbox.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_6243ac17400c8",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "preview_size": "medium",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
+        },
+        {
+            "key": "field_6243ab00400c7",
+            "label": "Video",
+            "name": "engrid_video",
+            "type": "file",
+            "instructions": "Main Video of the Lightbox.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_6243ac17400c8",
+                        "operator": "!=",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "library": "all",
+            "min_size": "",
+            "max_size": "",
+            "mime_types": "mp4"
+        },
+        {
+            "key": "field_6243ac9f400c9",
+            "label": "Autoplay Video",
+            "name": "engrid_video_autoplay",
+            "type": "true_false",
+            "instructions": "The video will be muted and auto-play with an infinite loop if true.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_6243ac17400c8",
+                        "operator": "!=",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        },
+        {
+            "key": "field_6243b14305fca",
+            "label": "Divider",
+            "name": "engrid_divider",
+            "type": "image",
+            "instructions": "SVG Image Used Between the Hero and the Content Area",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "preview_size": "medium",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "svg"
         },
         {
             "key": "field_61f1829913df9",
@@ -189,6 +395,44 @@
             "default_value": "#000000",
             "enable_opacity": 0,
             "return_format": "string"
+        },
+        {
+            "key": "field_6243b2605a3e1",
+            "label": "Celebration Confetti Colors",
+            "name": "engrid_confetti",
+            "type": "repeater",
+            "instructions": "Colors for the celebration confetti. Remove all to disable the confetti.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Add Color",
+            "sub_fields": [
+                {
+                    "key": "field_6243b2945a3e2",
+                    "label": "Color",
+                    "name": "color",
+                    "type": "color_picker",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "enable_opacity": 0,
+                    "return_format": "string"
+                }
+            ]
         },
         {
             "key": "field_61f184e1c8650",
@@ -541,5 +785,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1643246756
+    "modified": 1648604404
 }
