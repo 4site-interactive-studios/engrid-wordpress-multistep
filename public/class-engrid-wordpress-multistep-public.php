@@ -105,7 +105,8 @@ class Engrid_Wordpress_Multistep_Public {
 			$engrid_image = get_field('engrid_image', 'option');
 			$engrid_video = get_field('engrid_video', 'option');
 			$engrid_video_auto_play = get_field('engrid_video_auto_play', 'option');
-			$engrid_logo = get_field('engrid_logo', 'option');
+			$engrid_use_logo = get_field('engrid_use_logo', 'option');
+			$engrid_logo = ($engrid_use_logo) ? get_field('engrid_logo', 'option') : '';
 			$engrid_logo_position = get_field('engrid_logo_position', 'option');
 			$engrid_divider = get_field('engrid_divider', 'option');
 			$engrid_title = get_field('engrid_title', 'option');

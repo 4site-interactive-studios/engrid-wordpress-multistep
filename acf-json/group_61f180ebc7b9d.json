@@ -35,13 +35,40 @@
             "placeholder": ""
         },
         {
+            "key": "field_624ca8da9a726",
+            "label": "Use Logo",
+            "name": "engrid_use_logo",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        },
+        {
             "key": "field_61f1822313df8",
             "label": "Logo",
             "name": "engrid_logo",
             "type": "image",
             "instructions": "Logo Image Used on the center of the Lightbox. On mobile, it will be scaled down and moved to the top.",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_624ca8da9a726",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "50",
                 "class": "",
@@ -65,7 +92,15 @@
             "type": "group",
             "instructions": "The video will be muted and auto-play with an infinite loop if true.",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_624ca8da9a726",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "50",
                 "class": "",
@@ -785,5 +820,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1648604404
+    "modified": 1649191311
 }
