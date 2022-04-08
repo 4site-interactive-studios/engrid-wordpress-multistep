@@ -11,6 +11,3 @@
  * @package    Engrid_Wordpress_Multistep
  * @subpackage Engrid_Wordpress_Multistep/public/partials
  */
-?>
-
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->
