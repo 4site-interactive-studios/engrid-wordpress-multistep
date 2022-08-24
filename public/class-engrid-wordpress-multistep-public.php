@@ -128,6 +128,7 @@ class Engrid_Wordpress_Multistep_Public {
 			$engrid_gtm_open_event_name = get_field('engrid_gtm_open_event_name', 'option');
 			$engrid_gtm_close_event_name = get_field('engrid_gtm_close_event_name', 'option');
 			$engrid_gtm_suppressed_event_name = get_field('engrid_gtm_suppressed_event_name', 'option');
+			$engrid_display = get_field('engrid_lightbox_display', 'option');
 			$confetti = array();
 			if(have_rows('engrid_confetti', 'option') ){
 				while( have_rows('engrid_confetti', 'option') ){ 
@@ -161,12 +162,20 @@ class Engrid_Wordpress_Multistep_Public {
 				$show_script = false;
 			}
 
-			if($engrid_start_date && strtotime($engrid_start_date) > time()){
+			if($engrid_display && $engrid_display == 'scheduled' && $engrid_start_date && strtotime($engrid_start_date) > time()){
 				$show_script = false;
 			}
 
-			if($engrid_end_date && strtotime($engrid_end_date) < time()){
+			if($engrid_display && $engrid_display == 'scheduled' && $engrid_end_date && strtotime($engrid_end_date) < time()){
 				$show_script = false;
+			}
+
+			if($engrid_display && $engrid_display == 'turned-off') {
+				$show_script = false;
+			}
+
+			if($engrid_display && $engrid_display == 'turned-on') {
+				$show_script = true;
 			}
 
 			$engrid_video_auto_play = ($engrid_hero_type == 'autoplay-video') ? 'true' : 'false';
