@@ -166,7 +166,7 @@ class Engrid_Wordpress_Multistep_Public {
 				$show_script = false;
 			}
 
-			if($engrid_display && $engrid_display == 'scheduled' && $engrid_end_date && strtotime($engrid_end_date) < time()){
+			if($engrid_display && $engrid_display == 'scheduled' && $engrid_end_date && (strtotime($engrid_end_date) + 86400) < time()){
 				$show_script = false;
 			}
 
