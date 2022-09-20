@@ -99,38 +99,18 @@ class Engrid_Wordpress_Multistep {
 	 */
 	private function load_dependencies() {
 
-    /**
-		 * Define path and URL to the ACF plugin.
-     * Include the ACF plugin.
-     * Customize the url setting to fix incorrect asset URLs.
-     * (Optional) Hide the ACF admin menu item.
-		 */
-    define( 'ENGRID_WORDPRESS_MULTISTEP_ACF_PATH', plugin_dir_path( dirname( __FILE__ ) ) . '/includes/acf/' );
-    define( 'ENGRID_WORDPRESS_MULTISTEP_ACF_URL', plugin_dir_url( dirname( __FILE__ ) ) . '/includes/acf/' );
+		add_filter('acf/settings/save_json', 'engrid_wordpress_multistep_json_save_point');
+		function engrid_wordpress_multistep_json_save_point( $path ) {
+			$path = plugin_dir_path( dirname( __FILE__ ) ) . '/acf-json';
+			return $path;
+		}
 
-    include_once( ENGRID_WORDPRESS_MULTISTEP_ACF_PATH . 'acf.php' );
-
-    add_filter('acf/settings/url', 'engrid_wordpress_multistep_settings_url');
-    function engrid_wordpress_multistep_settings_url( $url ) {
-        return ENGRID_WORDPRESS_MULTISTEP_ACF_URL;
-    }
-    //add_filter('acf/settings/show_admin', 'engrid_wordpress_multistep_settings_show_admin');
-    function engrid_wordpress_multistep_settings_show_admin( $show_admin ) {
-        return false;
-    }
-
-    add_filter('acf/settings/save_json', 'engrid_wordpress_multistep_json_save_point');
-    function engrid_wordpress_multistep_json_save_point( $path ) {
-        $path = plugin_dir_path( dirname( __FILE__ ) ) . '/acf-json';
-        return $path;
-    }
-
-    add_filter('acf/settings/load_json', 'engrid_wordpress_multistep_json_load_point');
-    function engrid_wordpress_multistep_json_load_point( $paths ) {        
-        unset($paths[0]);
-        $paths[] = plugin_dir_path( dirname( __FILE__ ) ) . '/acf-json';
-        return $paths;
-    }
+		add_filter('acf/settings/load_json', 'engrid_wordpress_multistep_json_load_point');
+		function engrid_wordpress_multistep_json_load_point( $paths ) {        
+			unset($paths[0]);
+			$paths[] = plugin_dir_path( dirname( __FILE__ ) ) . '/acf-json';
+			return $paths;
+		}
 
 
 		/**
@@ -192,7 +172,6 @@ class Engrid_Wordpress_Multistep {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
 	}
 
 	/**

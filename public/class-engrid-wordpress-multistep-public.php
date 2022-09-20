@@ -78,12 +78,137 @@ class Engrid_Wordpress_Multistep_Public {
 	}
 
 	/**
+	 * Get the lightbox from the database
+	 *
+	 * @since    1.0.0
+	 */
+
+	public function get_lightbox() {
+		// Get the current page URL
+		$current_page_url = get_permalink();
+		// Get the current page ID
+		$current_page_id = url_to_postid( $current_page_url );
+		$start_date_args = array(
+			'relation' => 'OR',
+			array(
+					'key' => 'engrid_start_date',
+					'value' => date('Ymd'),
+					'compare' => '>=',
+					'type' => 'DATE'
+				),
+				array(
+					'key' => 'engrid_start_date',
+					'value' => '',
+					'compare' => '=',
+				),
+			);
+		$end_date_args = array(
+			'relation' => 'OR',
+			array(
+					'key' => 'engrid_end_date',
+					'value' => date('Ymd'),
+					'compare' => '<=',
+					'type' => 'DATE'
+				),
+				array(
+					'key' => 'engrid_end_date',
+					'value' => '',
+					'compare' => '=',
+				),
+			);
+		$show_on_args = array(
+			'relation' => 'OR',
+			array(
+					'key' => 'engrid_show_on',
+					'value' => '"'.$current_page_id.'"',
+					'compare' => 'LIKE',
+				),
+				array(
+					'key' => 'engrid_show_on',
+					'value' => '',
+					'compare' => '=',
+				),
+			);
+		$hide_on_args = array(
+			'relation' => 'OR',
+			array(
+					'key' => 'engrid_hide_on',
+					'value' => '"'.$current_page_id.'"',
+					'compare' => 'NOT LIKE',
+				),
+				array(
+					'key' => 'engrid_hide_on',
+					'value' => '',
+					'compare' => '=',
+				),
+			);
+		$args = array(
+			'numberposts'	=> -1,
+			'post_type'		=> 'multistep_lightbox',
+			'meta_query'	=> array(
+				'relation'		=> 'AND',
+				$start_date_args,
+				$end_date_args,
+				$show_on_args,
+				$hide_on_args,
+			)
+		);
+		$lightbox = new WP_Query( $args );
+		if($lightbox->posts){
+			foreach($lightbox->posts as $lightbox){
+				$lightbox_id = $lightbox->ID;
+				$whitelist = get_field('engrid_whitelist', $lightbox_id);
+				$blacklist = get_field('engrid_blacklist', $lightbox_id);
+				if($whitelist){
+					// Explode the whitelist into an array
+					$whitelist_array = explode(',', $whitelist);
+					foreach($whitelist_array as $whitelist_item){
+						// Trim the whitespace from the whitelist item
+						$whitelist_item = trim($whitelist_item);
+						// Check if the current page URL contains the whitelist item
+						if(strpos($current_page_url, $whitelist_item) !== false){
+							// If it does, show the lightbox
+							return $lightbox_id;
+						}
+
+					}
+					// If whitelist is not empty and the current page URL does not contain any of the whitelist items, do not show the lightbox
+					continue;
+				}
+				elseif($blacklist){
+					// Explode the blacklist into an array
+					$blacklist_array = explode(',', $blacklist);
+					foreach($blacklist_array as $blacklist_item){
+						// Trim the whitespace from the blacklist item
+						$blacklist_item = trim($blacklist_item);
+						// Check if the current page URL contains the blacklist item
+						if(strpos($current_page_url, $blacklist_item) !== false){
+							// If it does, do not show the lightbox
+							continue;
+						}
+					}
+					// If blacklist is not empty and the current page URL does not contain any of the blacklist items, show the lightbox
+					return $lightbox_id;
+				}
+				else{
+					// If whitelist and blacklist are empty, show the lightbox
+					return $lightbox_id;
+				}
+			}
+		}
+		return false;
+	}
+
+
+
+	/**
 	 * Register the JavaScript for the public-facing side of the site.
 	 *
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
+		$lightbox_id = $this->get_lightbox();
+		if(!$lightbox_id) return;
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
@@ -99,30 +224,26 @@ class Engrid_Wordpress_Multistep_Public {
 
 
 		// wp_enqueue_script( $this->engrid_wordpress_multistep, plugin_dir_url( __FILE__ ) . 'js/engrid-wordpress-multistep-public.js', array( 'jquery' ), $this->version, false );
-		$engrid_donation_page = get_field('engrid_donation_page', 'option');
+		$engrid_donation_page = get_field('engrid_donation_page', $lightbox_id);
 		// Only render the plugin if the donation page is set
 		if($engrid_donation_page){
-			$engrid_image = get_field('engrid_image', 'option');
-			$engrid_logo = get_field('engrid_logo', 'option');
-			$engrid_title = get_field('engrid_title', 'option');
-			$engrid_paragraph = get_field('engrid_paragraph', 'option');
-			$engrid_footer = get_field('engrid_footer', 'option');
-			$engrid_bg_color = get_field('engrid_bg_color', 'option');
-			$engrid_text_color = get_field('engrid_text_color', 'option');
-			$engrid_form_color = get_field('engrid_form_color', 'option');
-			$engrid_show_on = get_field('engrid_show_on', 'option');
-			$engrid_hide_on = get_field('engrid_hide_on', 'option');
-			$engrid_start_date = get_field('engrid_start_date', 'option');
-			$engrid_end_date = get_field('engrid_end_date', 'option');
-			$engrid_cookie_hours = get_field('engrid_cookie_hours', 'option');
-			$engrid_cookie_name = get_field('engrid_cookie_name', 'option');
-			$engrid_trigger_type = get_field('engrid_trigger_type', 'option');
-			$engrid_trigger_seconds = get_field('engrid_trigger_seconds', 'option');
-			$engrid_trigger_scroll_pixels = get_field('engrid_trigger_scroll_pixels', 'option');
-			$engrid_trigger_scroll_percentage = get_field('engrid_trigger_scroll_percentage', 'option');
-			$engrid_gtm_open_event_name = get_field('engrid_gtm_open_event_name', 'option');
-			$engrid_gtm_close_event_name = get_field('engrid_gtm_close_event_name', 'option');
-			$engrid_gtm_suppressed_event_name = get_field('engrid_gtm_suppressed_event_name', 'option');
+			$engrid_image = get_field('engrid_image', $lightbox_id);
+			$engrid_logo = get_field('engrid_logo', $lightbox_id);
+			$engrid_title = get_field('engrid_title', $lightbox_id);
+			$engrid_paragraph = get_field('engrid_paragraph', $lightbox_id);
+			$engrid_footer = get_field('engrid_footer', $lightbox_id);
+			$engrid_bg_color = get_field('engrid_bg_color', $lightbox_id);
+			$engrid_text_color = get_field('engrid_text_color', $lightbox_id);
+			$engrid_form_color = get_field('engrid_form_color', $lightbox_id);
+			$engrid_cookie_hours = get_field('engrid_cookie_hours', $lightbox_id);
+			$engrid_cookie_name = get_field('engrid_cookie_name', $lightbox_id);
+			$engrid_trigger_type = get_field('engrid_trigger_type', $lightbox_id);
+			$engrid_trigger_seconds = get_field('engrid_trigger_seconds', $lightbox_id);
+			$engrid_trigger_scroll_pixels = get_field('engrid_trigger_scroll_pixels', $lightbox_id);
+			$engrid_trigger_scroll_percentage = get_field('engrid_trigger_scroll_percentage', $lightbox_id);
+			$engrid_gtm_open_event_name = get_field('engrid_gtm_open_event_name', $lightbox_id);
+			$engrid_gtm_close_event_name = get_field('engrid_gtm_close_event_name', $lightbox_id);
+			$engrid_gtm_suppressed_event_name = get_field('engrid_gtm_suppressed_event_name', $lightbox_id);
 
 			$trigger = 0;
 			switch(trim($engrid_trigger_type)){
@@ -143,21 +264,9 @@ class Engrid_Wordpress_Multistep_Public {
 					break;
 			}
 
-			$show_script = true;
-
-			if(($engrid_show_on && !in_array(get_the_ID(), $engrid_show_on)) || ($engrid_hide_on && in_array(get_the_ID(), $engrid_hide_on))){
-				$show_script = false;
-			}
-
-			if($engrid_start_date && strtotime($engrid_start_date) > time()){
-				$show_script = false;
-			}
-
-			if($engrid_end_date && strtotime($engrid_end_date) < time()){
-				$show_script = false;
-			}
-
 			$engrid_js_code = <<<ENGRID
+
+			console.log('Multistep Lightbox ID: $lightbox_id');
 
 			DonationLightboxOptions = {
 				url: "$engrid_donation_page",
@@ -177,10 +286,8 @@ class Engrid_Wordpress_Multistep_Public {
 				gtm_suppressed_event_name: "$engrid_gtm_suppressed_event_name",
 			};
 ENGRID;
-			if($show_script){
 				wp_add_inline_script($this->engrid_wordpress_multistep, $engrid_js_code, 'before');
-			}
 		}
 	}
-
+	
 }

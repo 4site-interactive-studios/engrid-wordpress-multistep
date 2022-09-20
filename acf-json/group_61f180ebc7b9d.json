@@ -207,8 +207,27 @@
             "endpoint": 0
         },
         {
+            "key": "field_6329fadd7d28c",
+            "label": "Show On (URL Pattern)",
+            "name": "engrid_whitelist",
+            "type": "text",
+            "instructions": "Comma-separated word\/slug list. It will show the lightbox if the URL contains any value from the list.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
             "key": "field_61f18500c8651",
-            "label": "Show On",
+            "label": "Show On (Individual Pages)",
             "name": "engrid_show_on",
             "type": "relationship",
             "instructions": "",
@@ -234,8 +253,27 @@
             "return_format": "id"
         },
         {
+            "key": "field_6329fd0899134",
+            "label": "Hide On (URL Pattern)",
+            "name": "engrid_blacklist",
+            "type": "text",
+            "instructions": "Comma-separated word\/slug list. It will show the lightbox if the URL contains any value from the list.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
             "key": "field_61f185c0c8654",
-            "label": "Hide On",
+            "label": "Hide On (Individual Pages)",
             "name": "engrid_hide_on",
             "type": "relationship",
             "instructions": "",
@@ -526,9 +564,9 @@
     "location": [
         [
             {
-                "param": "options_page",
+                "param": "post_type",
                 "operator": "==",
-                "value": "multistep-lightbox"
+                "value": "multistep_lightbox"
             }
         ]
     ],
@@ -541,5 +579,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1643246756
+    "modified": 1663696274
 }
