@@ -244,6 +244,11 @@ class Engrid_Wordpress_Multistep_Public {
 			$engrid_gtm_open_event_name = get_field('engrid_gtm_open_event_name', $lightbox_id);
 			$engrid_gtm_close_event_name = get_field('engrid_gtm_close_event_name', $lightbox_id);
 			$engrid_gtm_suppressed_event_name = get_field('engrid_gtm_suppressed_event_name', $lightbox_id);
+			$engrid_start_date = get_field('engrid_start_date', $lightbox_id);
+			$engrid_end_date = get_field('engrid_end_date', $lightbox_id);
+			$engrid_display = get_field('engrid_lightbox_display', $lightbox_id);
+			$engrid_show_on = get_field('engrid_show_on', $lightbox_id);
+			$engrid_hide_on = get_field('engrid_hide_on', $lightbox_id);
 
 			$trigger = 0;
 			switch(trim($engrid_trigger_type)){
@@ -264,6 +269,32 @@ class Engrid_Wordpress_Multistep_Public {
 					break;
 			}
 
+			$show_script = true;
+
+			if(($engrid_show_on && !in_array(get_the_ID(), $engrid_show_on)) || ($engrid_hide_on && in_array(get_the_ID(), $engrid_hide_on))){
+				$show_script = false;
+			}
+
+			if($engrid_display && $engrid_display == 'scheduled' && $engrid_start_date && strtotime($engrid_start_date) > time()){
+				$show_script = false;
+			}
+
+			if($engrid_display && $engrid_display == 'scheduled' && $engrid_end_date && (strtotime($engrid_end_date) + 86400) < time()){
+				$show_script = false;
+			}
+
+			if($engrid_display && $engrid_display == 'turned-off') {
+				$show_script = false;
+			}
+
+			if($engrid_display && $engrid_display == 'turned-on') {
+				$show_script = true;
+			}
+
+			$engrid_video_auto_play = ($engrid_hero_type == 'autoplay-video') ? 'true' : 'false';
+
+			$engrid_confetti = json_encode($confetti);
+
 			$engrid_js_code = <<<ENGRID
 
 			console.log('Multistep Lightbox ID: $lightbox_id');
@@ -272,9 +303,16 @@ class Engrid_Wordpress_Multistep_Public {
 				url: "$engrid_donation_page",
 				image: "$engrid_image",
 				logo: "$engrid_logo",
+				video: "$engrid_video",
+				autoplay: $engrid_video_auto_play,
+				logo_position_top: "{$engrid_logo_position['top']}px",
+				logo_position_left: "{$engrid_logo_position['left']}px",
+				logo_position_right: "{$engrid_logo_position['right']}px",
+				logo_position_bottom: "{$engrid_logo_position['bottom']}px",
+				divider: "$engrid_divider",
 				title: "$engrid_title",
-				paragraph: "$engrid_paragraph",
-				footer: "$engrid_footer",
+				paragraph: `$engrid_paragraph`,
+				footer: `$engrid_footer`,
 				bg_color: "$engrid_bg_color",
 				txt_color: "$engrid_text_color",
 				form_color: "$engrid_form_color",
@@ -284,6 +322,7 @@ class Engrid_Wordpress_Multistep_Public {
 				gtm_open_event_name: "$engrid_gtm_open_event_name",
 				gtm_close_event_name: "$engrid_gtm_close_event_name",
 				gtm_suppressed_event_name: "$engrid_gtm_suppressed_event_name",
+				confetti: $engrid_confetti,
 			};
 ENGRID;
 				wp_add_inline_script($this->engrid_wordpress_multistep, $engrid_js_code, 'before');
