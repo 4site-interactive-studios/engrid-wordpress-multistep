@@ -80,3 +80,93 @@ function register_multistep_lightbox_post_type() {
 }
 
 add_action( 'init', 'register_multistep_lightbox_post_type', 0 );
+
+// Add new columns to list page
+add_filter( 'manage_multistep_lightbox_posts_columns', 'smashing_add_new_columns' );
+
+function smashing_add_new_columns( $columns ) {
+    $columns['status'] = __( 'Status', 'smashing' );
+    $columns['engrid_start_date'] = __( 'Start Date', 'smashing' );
+    $columns['engrid_end_date'] = __( 'End Date', 'smashing' );
+    $columns['trigger'] = __( 'Trigger', 'smashing' );
+    return $columns;
+}
+
+add_action( 'manage_multistep_lightbox_posts_custom_column', 'smashing_multistep_lightbox_column', 10, 2);
+function smashing_multistep_lightbox_column( $column, $post_id ) {
+  if ( $column == 'status' ) {
+    $status = get_post_meta( $post_id, 'engrid_lightbox_display', true);
+
+    echo implode(" ", array_map("ucfirst", explode("-", $status)));
+  }
+  
+  if ( 'engrid_start_date' === $column ) {
+    $start_date = strtotime(get_post_meta( $post_id, 'engrid_start_date', true ));
+
+    echo date("m/d/Y", $start_date);
+  }
+  
+  if ( 'engrid_end_date' === $column ) {
+    $end_date = strtotime(get_post_meta( $post_id, 'engrid_end_date', true ));
+
+    echo date("m/d/Y", $end_date);
+  }
+  
+  if ( 'trigger' === $column ) {
+    $trigger = get_post_meta( $post_id, 'engrid_trigger_type', true );
+    $pixels = get_post_meta( $post_id, 'engrid_trigger_scroll_pixels', true );
+    $seconds = get_post_meta( $post_id, 'engrid_trigger_seconds', true );
+    $percentage = get_post_meta( $post_id, 'engrid_trigger_scroll_percentage', true );
+
+    switch($trigger) {
+        case "0":
+            echo "Immediately";
+            break;
+        case "seconds":
+            echo "After $seconds seconds";
+            break;
+        case "px":
+            echo "After scrolling $pixels pixels";
+            break;
+        case "%":
+            echo "After scrolling $percentage% of the page";
+            break;
+        case "exit":
+            echo "On exit";
+            break;
+    }
+  }
+}
+
+add_filter( 'manage_edit-multistep_lightbox_sortable_columns', 'smashing_multistep_lightbox_sortable_columns');
+function smashing_multistep_lightbox_sortable_columns( $columns ) {
+  $columns['status'] = 'engrid_lightbox_display';
+  $columns['engrid_start_date'] = 'engrid_start_date';
+  $columns['engrid_end_date'] = 'engrid_end_date';
+
+  return $columns;
+}
+
+add_action( 'pre_get_posts', 'smashing_posts_orderby' );
+function smashing_posts_orderby( $query ) {
+  if( ! is_admin() || ! $query->is_main_query() ) {
+    return;
+  }
+
+  if ( 'engrid_lightbox_display' === $query->get( 'orderby') ) {
+    $query->set( 'orderby', 'meta_value' );
+    $query->set( 'meta_key', 'engrid_lightbox_display' );
+  }
+  
+  if ( 'engrid_start_date' === $query->get( 'orderby') ) {
+    $query->set( 'orderby', 'meta_value' );
+    $query->set( 'meta_key', 'engrid_start_date' );
+    $query->set( 'meta_type', 'date' );
+  }
+
+  if ( 'engrid_end_date' === $query->get( 'orderby') ) {
+    $query->set( 'orderby', 'meta_value' );
+    $query->set( 'meta_key', 'engrid_end_date' );
+    $query->set( 'meta_type', 'date' );
+  }
+}

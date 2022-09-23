@@ -93,7 +93,7 @@ class Engrid_Wordpress_Multistep_Public {
 			array(
 					'key' => 'engrid_start_date',
 					'value' => date('Ymd'),
-					'compare' => '>=',
+					'compare' => '<=',
 					'type' => 'DATE'
 				),
 				array(
@@ -107,7 +107,7 @@ class Engrid_Wordpress_Multistep_Public {
 			array(
 					'key' => 'engrid_end_date',
 					'value' => date('Ymd'),
-					'compare' => '<=',
+					'compare' => '>=',
 					'type' => 'DATE'
 				),
 				array(
@@ -142,6 +142,19 @@ class Engrid_Wordpress_Multistep_Public {
 					'compare' => '=',
 				),
 			);
+		$display_args = array(
+			'relation' => 'OR',
+			array(
+				'key' => 'engrid_lightbox_display',
+				'value' => 'turned-off',
+				'compare' => '!=',
+			),
+			array(
+				'key' => 'engrid_lightbox_display',
+				'value' => '',
+				'compare' => '=',
+			),
+		);
 		$args = array(
 			'numberposts'	=> -1,
 			'post_type'		=> 'multistep_lightbox',
@@ -151,8 +164,10 @@ class Engrid_Wordpress_Multistep_Public {
 				$end_date_args,
 				$show_on_args,
 				$hide_on_args,
+				$display_args,
 			)
 		);
+
 		$lightbox = new WP_Query( $args );
 		if($lightbox->posts){
 			foreach($lightbox->posts as $lightbox){
@@ -208,7 +223,9 @@ class Engrid_Wordpress_Multistep_Public {
 	 */
 	public function enqueue_scripts() {
 		$lightbox_id = $this->get_lightbox();
+
 		if(!$lightbox_id) return;
+
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
@@ -244,11 +261,6 @@ class Engrid_Wordpress_Multistep_Public {
 			$engrid_gtm_open_event_name = get_field('engrid_gtm_open_event_name', $lightbox_id);
 			$engrid_gtm_close_event_name = get_field('engrid_gtm_close_event_name', $lightbox_id);
 			$engrid_gtm_suppressed_event_name = get_field('engrid_gtm_suppressed_event_name', $lightbox_id);
-			$engrid_start_date = get_field('engrid_start_date', $lightbox_id);
-			$engrid_end_date = get_field('engrid_end_date', $lightbox_id);
-			$engrid_display = get_field('engrid_lightbox_display', $lightbox_id);
-			$engrid_show_on = get_field('engrid_show_on', $lightbox_id);
-			$engrid_hide_on = get_field('engrid_hide_on', $lightbox_id);
 
 			$trigger = 0;
 			switch(trim($engrid_trigger_type)){
@@ -267,28 +279,6 @@ class Engrid_Wordpress_Multistep_Public {
 				case 'exit':
 					$trigger = 'exit';
 					break;
-			}
-
-			$show_script = true;
-
-			if(($engrid_show_on && !in_array(get_the_ID(), $engrid_show_on)) || ($engrid_hide_on && in_array(get_the_ID(), $engrid_hide_on))){
-				$show_script = false;
-			}
-
-			if($engrid_display && $engrid_display == 'scheduled' && $engrid_start_date && strtotime($engrid_start_date) > time()){
-				$show_script = false;
-			}
-
-			if($engrid_display && $engrid_display == 'scheduled' && $engrid_end_date && (strtotime($engrid_end_date) + 86400) < time()){
-				$show_script = false;
-			}
-
-			if($engrid_display && $engrid_display == 'turned-off') {
-				$show_script = false;
-			}
-
-			if($engrid_display && $engrid_display == 'turned-on') {
-				$show_script = true;
 			}
 
 			$engrid_video_auto_play = ($engrid_hero_type == 'autoplay-video') ? 'true' : 'false';
