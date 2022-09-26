@@ -94,22 +94,30 @@ function smashing_add_new_columns( $columns ) {
 
 add_action( 'manage_multistep_lightbox_posts_custom_column', 'smashing_multistep_lightbox_column', 10, 2);
 function smashing_multistep_lightbox_column( $column, $post_id ) {
-  if ( $column == 'status' ) {
-    $status = get_post_meta( $post_id, 'engrid_lightbox_display', true);
+  $status = get_post_meta( $post_id, 'engrid_lightbox_display', true);
 
+  if ( $column == 'status' ) {
     echo implode(" ", array_map("ucfirst", explode("-", $status)));
   }
   
   if ( 'engrid_start_date' === $column ) {
     $start_date = strtotime(get_post_meta( $post_id, 'engrid_start_date', true ));
 
-    echo date("m/d/Y", $start_date);
+    if($status == "scheduled") {
+      echo date("m/d/Y", $start_date);
+    } else {
+      echo "--";
+    }
   }
   
   if ( 'engrid_end_date' === $column ) {
     $end_date = strtotime(get_post_meta( $post_id, 'engrid_end_date', true ));
 
-    echo date("m/d/Y", $end_date);
+    if($status == "scheduled") {
+      echo date("m/d/Y", $end_date);
+    } else {
+      echo "--";
+    }
   }
   
   if ( 'trigger' === $column ) {

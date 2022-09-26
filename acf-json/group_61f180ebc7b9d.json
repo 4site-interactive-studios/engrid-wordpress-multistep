@@ -19,6 +19,79 @@
       "endpoint": 0
     },
     {
+      "key": "field_630676e57bb3b",
+      "label": "Lightbox Display",
+      "name": "engrid_lightbox_display",
+      "type": "button_group",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "choices": {
+        "turned-on": "Turned On",
+        "turned-off": "Turned Off",
+        "scheduled": "Scheduled"
+      },
+      "allow_null": 0,
+      "default_value": "",
+      "layout": "horizontal",
+      "return_format": "value"
+    },
+    {
+      "key": "field_61f1856cc8652",
+      "label": "Start Date",
+      "name": "engrid_start_date",
+      "type": "date_picker",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": [
+        [
+          {
+            "field": "field_630676e57bb3b",
+            "operator": "==",
+            "value": "Scheduled"
+          }
+        ]
+      ],
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "display_format": "m/d/Y",
+      "return_format": "m/d/Y",
+      "first_day": 1
+    },
+    {
+      "key": "field_61f185aac8653",
+      "label": "End Date",
+      "name": "engrid_end_date",
+      "type": "date_picker",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": [
+        [
+          {
+            "field": "field_630676e57bb3b",
+            "operator": "==",
+            "value": "Scheduled"
+          }
+        ]
+      ],
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "display_format": "m/d/Y",
+      "return_format": "m/d/Y",
+      "first_day": 1
+    },
+    {
       "key": "field_61f180fb94e9c",
       "label": "Engaging Networks Donation Page",
       "name": "engrid_donation_page",
@@ -285,79 +358,6 @@
       "min": "",
       "max": "",
       "return_format": "id"
-    },
-    {
-      "key": "field_630676e57bb3b",
-      "label": "Lightbox Display",
-      "name": "engrid_lightbox_display",
-      "type": "button_group",
-      "instructions": "",
-      "required": 0,
-      "conditional_logic": 0,
-      "wrapper": {
-        "width": "",
-        "class": "",
-        "id": ""
-      },
-      "choices": {
-        "turned-on": "Turned On",
-        "turned-off": "Turned Off",
-        "scheduled": "Scheduled"
-      },
-      "allow_null": 0,
-      "default_value": "",
-      "layout": "horizontal",
-      "return_format": "value"
-    },
-    {
-      "key": "field_61f1856cc8652",
-      "label": "Start Date",
-      "name": "engrid_start_date",
-      "type": "date_picker",
-      "instructions": "",
-      "required": 0,
-      "conditional_logic": [
-        [
-          {
-            "field": "field_630676e57bb3b",
-            "operator": "==",
-            "value": "Scheduled"
-          }
-        ]
-      ],
-      "wrapper": {
-        "width": "50",
-        "class": "",
-        "id": ""
-      },
-      "display_format": "m/d/Y",
-      "return_format": "m/d/Y",
-      "first_day": 1
-    },
-    {
-      "key": "field_61f185aac8653",
-      "label": "End Date",
-      "name": "engrid_end_date",
-      "type": "date_picker",
-      "instructions": "",
-      "required": 0,
-      "conditional_logic": [
-        [
-          {
-            "field": "field_630676e57bb3b",
-            "operator": "==",
-            "value": "Scheduled"
-          }
-        ]
-      ],
-      "wrapper": {
-        "width": "50",
-        "class": "",
-        "id": ""
-      },
-      "display_format": "m/d/Y",
-      "return_format": "m/d/Y",
-      "first_day": 1
     },
     {
       "key": "field_61f1c83ea39c4",
