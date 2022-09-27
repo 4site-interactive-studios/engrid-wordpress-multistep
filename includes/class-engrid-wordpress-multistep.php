@@ -137,6 +137,16 @@ class Engrid_Wordpress_Multistep {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-engrid-wordpress-multistep-public.php';
 
 		$this->loader = new Engrid_Wordpress_Multistep_Loader();
+		add_action('acf/save_post', 'engrid_wordpress_multistep_save_post');
+		function engrid_wordpress_multistep_save_post( $post_id ) {
+			// Detect when the options page for this plugin is being saved
+			if($post_id == 'options' && isset($_POST['acf']['field_61f180fb94e9c'])) {
+				// Clear the cloudflare caches. This requires both the
+				// ENgrid Wordpress Multistep Cloudflare Addon plugin and 
+				// the Cloudflare plugin.
+				do_action('engrid_wpm_clear_cloudflare_all');
+			}
+		}
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/options.php';
 
