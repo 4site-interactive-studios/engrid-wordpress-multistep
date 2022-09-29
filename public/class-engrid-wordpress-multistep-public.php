@@ -101,11 +101,6 @@ class Engrid_Wordpress_Multistep_Public {
 					'value' => '',
 					'compare' => '=',
 				),
-				array(
-					'key' => 'engrid_start_date',
-					'compare' => 'NOT EXISTS',
-					'value' => ''
-				)
 			);
 		$end_date_args = array(
 			'relation' => 'OR',
@@ -120,11 +115,6 @@ class Engrid_Wordpress_Multistep_Public {
 					'value' => '',
 					'compare' => '=',
 				),
-				array(
-					'key' => 'engrid_end_date',
-					'compare' => 'NOT EXISTS',
-					'value' => ''
-				)
 			);
 		$show_on_args = array(
 			'relation' => 'OR',
