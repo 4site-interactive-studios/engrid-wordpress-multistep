@@ -88,34 +88,6 @@ class Engrid_Wordpress_Multistep_Public {
 		$current_page_url = get_permalink();
 		// Get the current page ID
 		$current_page_id = url_to_postid( $current_page_url );
-		$start_date_args = array(
-			'relation' => 'OR',
-			array(
-					'key' => 'engrid_start_date',
-					'value' => date('Ymd'),
-					'compare' => '<=',
-					'type' => 'DATE'
-				),
-				array(
-					'key' => 'engrid_start_date',
-					'value' => '',
-					'compare' => '=',
-				),
-			);
-		$end_date_args = array(
-			'relation' => 'OR',
-			array(
-					'key' => 'engrid_end_date',
-					'value' => date('Ymd'),
-					'compare' => '>=',
-					'type' => 'DATE'
-				),
-				array(
-					'key' => 'engrid_end_date',
-					'value' => '',
-					'compare' => '=',
-				),
-			);
 		$show_on_args = array(
 			'relation' => 'OR',
 			array(
@@ -125,6 +97,20 @@ class Engrid_Wordpress_Multistep_Public {
 				),
 				array(
 					'key' => 'engrid_show_on',
+					'value' => '',
+					'compare' => '=',
+				),
+			);
+			
+		$hide_on_args = array(
+			'relation' => 'OR',
+			array(
+					'key' => 'engrid_hide_on',
+					'value' => '"'.$current_page_id.'"',
+					'compare' => 'NOT LIKE',
+				),
+				array(
+					'key' => 'engrid_hide_on',
 					'value' => '',
 					'compare' => '=',
 				),
@@ -160,8 +146,6 @@ class Engrid_Wordpress_Multistep_Public {
 			'post_type'		=> 'multistep_lightbox',
 			'meta_query'	=> array(
 				'relation'		=> 'AND',
-				$start_date_args,
-				$end_date_args,
 				$show_on_args,
 				$hide_on_args,
 				$display_args,
@@ -174,6 +158,9 @@ class Engrid_Wordpress_Multistep_Public {
 				$lightbox_id = $lightbox->ID;
 				$whitelist = get_field('engrid_whitelist', $lightbox_id);
 				$blacklist = get_field('engrid_blacklist', $lightbox_id);
+				$lightbox_start = get_field('engrid_start_date', $lightbox_id);
+				$lightbox_end = get_field('engrid_end_date', $lightbox_id);
+
 				if($whitelist){
 					// Explode the whitelist into an array
 					$whitelist_array = explode(',', $whitelist);
@@ -199,12 +186,24 @@ class Engrid_Wordpress_Multistep_Public {
 						// Check if the current page URL contains the blacklist item
 						if(strpos($current_page_url, $blacklist_item) !== false){
 							// If it does, do not show the lightbox
-							continue;
+							return false;
 						}
 					}
 					// If blacklist is not empty and the current page URL does not contain any of the blacklist items, show the lightbox
 					return $lightbox_id;
 				}
+
+				// Check if scheduled lightbox is in date range
+				elseif($lightbox_start && $lightbox_end) {
+					$today_date = date("Ymd");
+
+					if($today_date >= date_format(date_create($lightbox_start), "Ymd") && $today_date <= date_format(date_create($lightbox_end), "Ymd")) {
+						return $lightbox_id;
+					} 
+
+					return false;
+				}
+
 				else{
 					// If whitelist and blacklist are empty, show the lightbox
 					return $lightbox_id;
@@ -244,14 +243,23 @@ class Engrid_Wordpress_Multistep_Public {
 		$engrid_donation_page = get_field('engrid_donation_page', $lightbox_id);
 		// Only render the plugin if the donation page is set
 		if($engrid_donation_page){
-			$engrid_image = get_field('engrid_image', $lightbox_id);
-			$engrid_logo = get_field('engrid_logo', $lightbox_id);
+			$engrid_hero_type = get_field('engrid_hero_type', $lightbox_id);
+			$engrid_image = ($engrid_hero_type == 'image') ? get_field('engrid_image', $lightbox_id) : '';
+			$engrid_video = ($engrid_hero_type != 'image') ? get_field('engrid_video', $lightbox_id) : '';
+			$engrid_use_logo = get_field('engrid_use_logo', $lightbox_id);
+			$engrid_logo = ($engrid_use_logo) ? get_field('engrid_logo', $lightbox_id) : '';
+			$engrid_logo_position = get_field('engrid_logo_position', $lightbox_id);
+			$engrid_divider = get_field('engrid_divider', $lightbox_id);
 			$engrid_title = get_field('engrid_title', $lightbox_id);
 			$engrid_paragraph = get_field('engrid_paragraph', $lightbox_id);
 			$engrid_footer = get_field('engrid_footer', $lightbox_id);
 			$engrid_bg_color = get_field('engrid_bg_color', $lightbox_id);
 			$engrid_text_color = get_field('engrid_text_color', $lightbox_id);
 			$engrid_form_color = get_field('engrid_form_color', $lightbox_id);
+			$engrid_show_on = get_field('engrid_show_on', $lightbox_id);
+			$engrid_hide_on = get_field('engrid_hide_on', $lightbox_id);
+			$engrid_start_date = get_field('engrid_start_date', $lightbox_id);
+			$engrid_end_date = get_field('engrid_end_date', $lightbox_id);
 			$engrid_cookie_hours = get_field('engrid_cookie_hours', $lightbox_id);
 			$engrid_cookie_name = get_field('engrid_cookie_name', $lightbox_id);
 			$engrid_trigger_type = get_field('engrid_trigger_type', $lightbox_id);
@@ -261,6 +269,15 @@ class Engrid_Wordpress_Multistep_Public {
 			$engrid_gtm_open_event_name = get_field('engrid_gtm_open_event_name', $lightbox_id);
 			$engrid_gtm_close_event_name = get_field('engrid_gtm_close_event_name', $lightbox_id);
 			$engrid_gtm_suppressed_event_name = get_field('engrid_gtm_suppressed_event_name', $lightbox_id);
+			$engrid_display = get_field('engrid_lightbox_display', $lightbox_id);
+			$confetti = array();
+
+			if(have_rows('engrid_confetti', $lightbox_id) ){
+				while( have_rows('engrid_confetti', $lightbox_id) ){
+					the_row();
+					$confetti[] = get_sub_field('color');
+				}
+			}
 
 			$trigger = 0;
 			switch(trim($engrid_trigger_type)){
