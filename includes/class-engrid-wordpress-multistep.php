@@ -99,16 +99,9 @@ class Engrid_Wordpress_Multistep {
 	 */
 	private function load_dependencies() {
 
-		add_filter('acf/settings/save_json', 'engrid_wordpress_multistep_json_save_point');
-		function engrid_wordpress_multistep_json_save_point( $path ) {
-			$path = plugin_dir_path( dirname( __FILE__ ) ) . '/acf-json';
-			return $path;
-		}
-
 		add_filter('acf/settings/load_json', 'engrid_wordpress_multistep_json_load_point');
-		function engrid_wordpress_multistep_json_load_point( $paths ) {        
-			unset($paths[0]);
-			$paths[] = plugin_dir_path( dirname( __FILE__ ) ) . '/acf-json';
+		function engrid_wordpress_multistep_json_load_point( $paths ) {        			
+			$paths[] = plugin_dir_path( dirname( __FILE__ ) ) . 'acf-json';
 			return $paths;
 		}
 
