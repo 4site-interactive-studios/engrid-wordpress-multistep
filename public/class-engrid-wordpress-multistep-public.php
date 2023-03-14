@@ -186,7 +186,7 @@ class Engrid_Wordpress_Multistep_Public {
 						// Check if the current page URL contains the blacklist item
 						if(strpos($current_page_url, $blacklist_item) !== false){
 							// If it does, do not show the lightbox
-							return false;
+							continue;
 						}
 					}
 					// If blacklist is not empty and the current page URL does not contain any of the blacklist items, show the lightbox
@@ -201,7 +201,7 @@ class Engrid_Wordpress_Multistep_Public {
 						return $lightbox_id;
 					} 
 
-					return false;
+					continue;
 				}
 
 				else{
